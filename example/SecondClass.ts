@@ -1,5 +1,5 @@
 import { FirstClass } from "./FirstClass";
-import { Service } from "../Service";
+import { Service } from "../src/Service";
 
 @Service()
 export class SecondClass {

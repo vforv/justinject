@@ -1,4 +1,4 @@
-import { Service } from "../Service";
+import { Service } from "../src/Service";
 import { FirstClass } from "./FirstClass";
 import { SecondClass } from "./SecondClass";
 
