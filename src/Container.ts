@@ -13,6 +13,16 @@ export const Container = new class {
     }
 
     public set(target: IType<any>, type?: string) {
+        const serviceName = target.name;
+        const serviceNameFirstLetter = serviceName.substring(0, 1);
+
+        if (serviceName.slice(-7) !== 'Service') {
+            throw new Error(`Service ${serviceName} should end with Service key word`);
+        }
+        if (serviceNameFirstLetter !== serviceNameFirstLetter.toUpperCase()) {
+            throw new Error(`Service ${serviceName} should start with capital first letter`);
+        }
+
         this.setserviceType(target, type);
     }
 
@@ -159,6 +169,7 @@ export const Container = new class {
                 return target;
             }
             case undefined: {
+                /* istanbul ignore next */
                 if (!this.serviceType.has(target.name)) {
                     this.serviceType.set(target.name, 'default');
                 }

@@ -2,10 +2,10 @@ import 'mocha';
 
 import { Container } from '../src/Container';
 import { ForthService, FirstService, FirstSinletonService } from './services';
-import { FirstServiceMock, FirstSinletonServiceMockWrong } from './mocks';
+import { FirstServiceMock, FirstSinletonServiceMockWrong, Wrong } from './mocks';
 import * as replace from './mocks/replace';
 import * as chai from 'chai';
-import { FirstSinletonServiceMock, WrongTypeService } from './mocks/index';
+import { FirstSinletonServiceMock, WrongTypeService, wrongService } from './mocks/index';
 
 const expect = chai.expect;
 // const assert = chai.assert;
@@ -117,6 +117,22 @@ describe('Test DI for typescript', () => {
         Container.clear();
 
         expect(() => Container.set(WrongTypeService, 'somethingwrong')).throws(`Please check WrongTypeService service. Service type somethingwrong doesn't exists`);
+        
+        done();
+    })
+
+    it('Service should start with capital first letter', (done) => {
+        Container.clear();
+
+        expect(() => Container.set(wrongService, undefined)).throws(`Service wrongService should start with capital first letter`);
+        
+        done();
+    })
+
+    it('Service name should have Service kayword on the end', (done) => {
+        Container.clear();
+
+        expect(() => Container.set(Wrong, undefined)).throws(`Service Wrong should end with Service key word`);
         
         done();
     })
