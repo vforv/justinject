@@ -1,5 +1,5 @@
 {
-  "name": "di-ts",
+  "name": "justinject",
   "version": "1.0.0",
   "description": "Light DI for typescript",
   "main": "example/index.ts",
