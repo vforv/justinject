@@ -8,3 +8,27 @@ export class FirstServiceMock extends FirstService {
         return 'Method from first service mocked';
     }
 }
+
+
+export class FirstSinletonServiceMock {
+    constructor(public first: FirstService) { }
+
+    public method() {
+        return `${this.first.rndNumber()} Mocked!!!`;
+    }
+}
+
+
+
+export class FirstSinletonServiceMockWrong {
+    constructor(public first: FirstService) { }
+
+    public method() {
+        return `${this.first.rndNumber()} Mocked!!!`;
+    }
+}
+
+@Service()
+export class WrongTypeService {
+
+}

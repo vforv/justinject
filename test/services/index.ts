@@ -2,7 +2,7 @@ import { Service } from '../../src/Service';
 
 @Service()
 export class FirstService {
-    private rnd: number;
+    public rnd: number;
     constructor() {
         this.rnd = Math.random();
     }
@@ -21,7 +21,7 @@ export class FirstService {
 }
 
 @Service('singleton')
-class FirstSinletonService {
+export class FirstSinletonService {
     constructor(public first: FirstService) { }
 
     public method() {

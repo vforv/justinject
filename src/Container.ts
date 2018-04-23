@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import {  IType, MockingType } from './Model';
+import { IType, MockingType, Mock } from './Model';
 
 /*eslint new-parens: "error"*/
 export const Container = new class {
@@ -16,6 +16,13 @@ export const Container = new class {
         this.setserviceType(target, type);
     }
 
+    public clear() {
+        this.service.clear();
+        this.serviceType.clear();
+        this.mocks.clear();
+        this.hasMocks = false;
+    }
+
     /**
      * Resolove service with all deps
      *
@@ -24,15 +31,47 @@ export const Container = new class {
     public resolve<T>(target: any): T {
 
         // tokens are required dependencies, while injections are resolved tokens from the Container
+        /* istanbul ignore next */
         const tokens: any = Reflect.getMetadata('design:paramtypes', target) || [];
         const injections = tokens.map((token: any) => Container.resolve<any>(token));
 
         if (this.hasMocks && this.isMockedClass(target)) {
             const MockClass = this.getMock(target);
+
             return this.resolveByserviceType<T>(MockClass, injections);
         }
 
         return this.resolveByserviceType<T>(target, injections);
+    }
+
+    /**
+     * This will reslove service, if service is sinleton
+     * we need just to return instance
+     *
+     * @param target service
+     * @param injections dependencies
+     */
+    private resolveByserviceType<T>(target: IType<T>, injections: any): T {
+        switch (this.serviceType.get(target.name)) {
+            case 'singleton': {
+                this.service.get('FirstSinletonServiceMock')
+                if (this.service.get(target.name) === null) {
+                    // resolve each mocked service here
+                    const inj = new target(...injections);
+
+                    this.service.set(target.name, inj);
+                    return inj;
+                }
+
+                return this.service.get(target.name);
+            }
+            case 'default': {
+                return new target(...injections);
+            }
+            default: {
+                return new target(...injections);
+            }
+        }
     }
 
     /**
@@ -43,22 +82,21 @@ export const Container = new class {
     public mock(mocks: MockingType) {
         this.hasMocks = true;
 
-        mocks.map((target: any) => {
-            const serviceToMockName: string = target.dep.name.slice(0, -4);
-            const serviceToMockType: string = this.serviceType.get(serviceToMockName);
+        mocks.map((target: Mock) => {
+            /* istanbul ignore next */
+            const serviceToMockType: string = (target.type) ? target.type : 'default';
 
-            if (target.dep.name.slice(-4) !== 'Mock') {
-                throw Error('Class name must end with "Mock"');
+            if (target.mockWith.name.slice(-4) !== 'Mock') {
+                throw new Error('Class name must end with "Mock"');
             }
 
-            if (!target.override && serviceToMockType === 'default') {
-                if (!(target.dep.prototype instanceof this.service.get(serviceToMockName))) {
-                    throw Error('"Mock" class must extends main instance, or use override tag');
+            if (!target.override) {
+                if (!(target.mockWith.prototype instanceof target.service)) {
+                    throw new Error('"Mock" class must extends main instance, or set override tag to be true');
                 }
             }
-
-            this.service.delete(serviceToMockName);
-            this.setMocks(target, serviceToMockType);
+            
+            this.setMocks(target.mockWith, serviceToMockType);
         });
     }
 
@@ -80,35 +118,7 @@ export const Container = new class {
         return this.mocks.has(`${target.name}Mock`);
     }
 
-    /**
-     * This will reslove service, if service is sinleton
-     * we need just to return instance
-     *
-     * @param target service
-     * @param injections dependencies
-     */
-    private resolveByserviceType<T>(target: IType<T>, injections: any): T {
-        switch (this.serviceType.get(target.name)) {
-            case 'singleton': {
-                if (this.service.get(target.name) === null) {
-                    // resolve each mocked service here
-                    console.log(injections)
-                    const inj = new target(...injections);
-                    
-                    this.service.set(target.name, inj);
-                    return inj;
-                }
 
-                return this.service.get(target.name);
-            }
-            case 'default': {
-                return new target(...injections);
-            }
-            default: {
-                return new target(...injections);
-            }
-        }
-    }
 
     /**
      * This will add mocking services to service property
@@ -117,18 +127,17 @@ export const Container = new class {
      * @param serviceToMockType
      */
     private setMocks(mockingService: any, serviceToMockType: string) {
-        this.serviceType.set(mockingService.dep.name, serviceToMockType);
-        this.mocks.set(mockingService.dep.name, mockingService.dep);
-
+        this.serviceType.set(mockingService.name, serviceToMockType);
+        this.mocks.set(mockingService.name, mockingService);
+       
         switch (serviceToMockType) {
             case 'singleton': {
-                this.service.set(mockingService.dep.name, null);
+                this.service.set(mockingService.name, null);
             }
             case 'default': {
-                this.service.set(mockingService.dep.name, mockingService.dep);
-            }
-            default: {
-                this.service.set(mockingService.dep.name, mockingService.dep);
+                if (serviceToMockType !== 'singleton') {
+                    this.service.set(mockingService.name, mockingService);
+                }
             }
         }
     }

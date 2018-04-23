@@ -3,6 +3,8 @@ export interface IType<T> {
     new (...arg: any[]): T;
 }
 
-export type MockingType = Array<{ dep: any, override?: boolean }>;
+export type Mock = { service: any, mockWith: any, override: boolean, type: 'singleton' | 'default' };
+
+export type MockingType = Array<Mock>;
 
 export type IGenericClass<T> = (target: T) => void;

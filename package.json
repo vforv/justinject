@@ -1,8 +1,8 @@
 {
   "name": "di-ts",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Light DI for typescript",
+  "main": "example/index.ts",
   "nyc": {
     "extension": [
       ".ts",
@@ -12,7 +12,8 @@
       "**/*.d.ts",
       "coverage",
       "test",
-      "example"
+      "example",
+      "src/Model.ts"
     ],
     "reporter": [
       "html",
@@ -26,17 +27,19 @@
     "test": "nyc --check-coverage --lines 100 --functions 100 --branches 100 --statements 100 mocha -r ts-node/register test/**/*.test.ts",
     "ts-node": "npm run lint && ts-node ./example"
   },
-  "author": "",
+  "author": "Vladimir Djukic",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "@types/boom": "^7.2.0",
     "@types/chai": "^4.1.3",
     "@types/mocha": "^5.2.0",
-    "@types/pino": "^4.7.1",
+    "boom": "^7.2.0",
+    "boomify": "0.0.1",
     "chai": "^4.1.2",
     "mocha": "^5.1.1",
     "nodemon": "^1.17.3",
     "nyc": "^11.7.1",
-    "pino": "^4.16.1",
+    "reflect-metadata": "^0.1.12",
     "ts-node": "^6.0.0",
     "tslint": "^5.9.1",
     "typescript": "^2.8.3"
