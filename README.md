@@ -8,6 +8,13 @@ To install it type:
 
 ```npm i justinject -S```
 
+And it is necessary to enable:
+
+"experimentalDecorators": true
+"emitDecoratorMetadata": true
+
+in tsconfig.json file
+
 # Example
 
 ```

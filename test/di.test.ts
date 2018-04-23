@@ -57,7 +57,7 @@ describe('Test DI for typescript', () => {
         ])
         forth = Container.resolve<ForthService>(ForthService);
         first = Container.resolve<FirstService>(FirstService);
-
+        
         expect(forth.fromForthService()).to.be.equals('Method from first service replaced');
         expect(first.rnd).to.not.exist
 
