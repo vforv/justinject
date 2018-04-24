@@ -9,7 +9,8 @@ script:
 deploy:
   provider: npm
   run:
-  - "npm run build"
+  - npm i
+  - npm run build
   email: vladimirdjukic90@gmail.com
   api_key: ${TOKEN}
   skip_cleanup: true
