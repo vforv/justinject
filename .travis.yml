@@ -11,8 +11,7 @@ deploy:
   script:
   - npm run build
   email: vladimirdjukic90@gmail.com
-  api_key:
-    secure: ACCESS_TOKEN
+  api_key: TOKEN
   on:
     tags: false
     repo: vforv/justinject
