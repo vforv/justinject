@@ -1,9 +1,16 @@
-
 language: typescript
 node_js:
-- '6.11.4'
+- 6.11.4
 before_install:
 - npm install -g typescript@2.8.3
 script:
 - npm i
 - npm test
+deploy:
+  provider: npm
+  email: vladimirdjukic90@gmail.com
+  api_key:
+    secure: ACCESS_TOKEN
+  on:
+    tags: true
+    repo: vforv/justinject
