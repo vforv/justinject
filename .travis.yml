@@ -5,4 +5,5 @@ node_js:
 before_install:
 - npm install -g typescript@2.8.3
 script:
+- npm i
 - npm test
