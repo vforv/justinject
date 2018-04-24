@@ -146,7 +146,9 @@ export const Container: IContainer<any> = new class {
     private setMocks(mockingService: any, serviceToMockType: string) {
         this.serviceType.set(mockingService.name, serviceToMockType);
         this.mocks.set(mockingService.name, mockingService);
-       
+
+        this.setPreviousSingletonToNull();
+
         switch (serviceToMockType) {
             case 'singleton': {
                 this.service.set(mockingService.name, null);
@@ -157,6 +159,19 @@ export const Container: IContainer<any> = new class {
                 }
             }
         }
+    }
+
+    /**
+     * If service is Singleton then set it to null
+     * So we can resove it again
+     * 
+     */
+    private setPreviousSingletonToNull() {
+        this.service.forEach((service) => {
+            if (service && service.constructor && this.serviceType.get(service.constructor.name) === 'singleton') {
+                this.service.set(service.constructor.name, null);
+            }
+        })
     }
 
     /**

@@ -17,7 +17,8 @@
       "coverage",
       "test",
       "example",
-      "src/Model.ts"
+      "src/Model.ts",
+      "dist"
     ],
     "reporter": [
       "html",
