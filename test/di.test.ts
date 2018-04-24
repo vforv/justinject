@@ -30,7 +30,6 @@ describe('Test DI for typescript', () => {
     })
 
     it('Mock/replace dependency work correctly', (done) => {
-        Container.clear();
         Container.mock([
             {
                 service: FirstService,
