@@ -1,6 +1,6 @@
 {
   "name": "justinject",
-  "version": "1.0.21",
+  "version": "1.0.22",
   "description": "Light DI for typescript",
   "main": "dist/index",
   "typings": "dist/index",
