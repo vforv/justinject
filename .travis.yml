@@ -12,5 +12,5 @@ deploy:
   api_key:
     secure: ACCESS_TOKEN
   on:
-    tags: true
+    tags: false
     repo: vforv/justinject
