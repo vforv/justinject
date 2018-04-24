@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/vforv/justinject.svg?branch=master)](https://travis-ci.org/vforv/justinject)
+
 # Dependency injection for Typescript
 
 Node module for DI in Typescript
