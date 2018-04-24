@@ -6,11 +6,11 @@ before_install:
 script:
 - npm i
 - npm test
+run:
+- npm i
+- npm run build
 deploy:
   provider: npm
-  run:
-  - npm i
-  - npm run build
   email: vladimirdjukic90@gmail.com
   api_key: ${TOKEN}
   skip_cleanup: true
