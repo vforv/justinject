@@ -8,6 +8,8 @@ script:
 - npm test
 deploy:
   provider: npm
+  script:
+  - npm run build
   email: vladimirdjukic90@gmail.com
   api_key:
     secure: ACCESS_TOKEN
