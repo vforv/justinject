@@ -6,6 +6,7 @@ before_install:
 script:
 - npm i
 - npm test
+- npm run lint
 - npm run build
 deploy:
   provider: npm

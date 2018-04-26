@@ -1,5 +1,5 @@
 import { Service } from '../../src/Service';
-
+import { Action } from '../../src/Action';
 @Service()
 export class FirstService {
     public rnd: number;
@@ -52,8 +52,31 @@ class ThirdService {
 }
 
 @Service()
+export class HemeraService {
+    constructor() { }
+
+    get instance() {
+        return {
+            add: (pattern: any, cb: any) => {
+                cb("msg from hemera", "done cb from hemera")
+                return 'callback'
+            }
+        };
+    }
+}
+
+@Service()
+export class ValidateService {
+    constructor() { }
+
+    get schema() {
+        return 'joi schema';
+    }
+}
+
+@Service()
 export class ForthService {
-    constructor(public third: ThirdService, public fromSingleton: FirstSinletonService, public first: FirstService) { }
+    constructor(public third: ThirdService, public fromSingleton: FirstSinletonService, public first: FirstService, public hemera: HemeraService, public validate: ValidateService) { }
 
     public fromForthService() {
         return this.third.fromThirdService();
@@ -69,5 +92,25 @@ export class ForthService {
 
     public isMockedOrReplaced() {
         this.first.mockedReplaced();
+    }
+
+    @Action({
+        topic: 'test.topic',
+        cmd: 'go'
+    })
+    public action(msg: any, done: any) {
+        console.log(msg)
+        console.log(done)
+        console.log(this.third.fromThirdService())
+    }
+
+    @Action({
+        topic: 'new.topic',
+        cmd: 'gogo'
+    }, { key: 'dothat', key1: 'dothis' })
+    public actionNew(msg: any, done: any) {
+        console.log(msg)
+        console.log(done)
+        console.log(this.third.fromThirdService())
     }
 }

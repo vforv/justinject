@@ -9,7 +9,9 @@
             true,
             "single",
             "jsx-double"
-        ]
+        ],
+        "no-console": false,
+        "ordered-imports": false
     },
     "rulesDirectory": []
 }

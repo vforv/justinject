@@ -1,4 +1,5 @@
-import { FirstService } from "../services";
+import { FirstService, HemeraService, ValidateService } from "../services";
+import { Action } from '../../src/Action';
 
 export class FirstServiceMock extends FirstService {
     public method() {
@@ -35,4 +36,31 @@ export class wrongService {
 
 export class Wrong {
 
+}
+
+export class HemeraServiceMock {
+    constructor() { }
+}
+
+export class ValidateServiceMock {
+    constructor() { }
+}
+
+
+export class ForthServiceMock {
+    constructor(public hemeraWrong: HemeraService, public validate: ValidateService) { }
+
+    @Action({
+        topic: 'test.topic',
+        cmd: 'go'
+    })
+    public action(msg: any, done: any) {
+    }
+
+    @Action({
+        topic: 'new.topic',
+        cmd: 'gogo'
+    }, { key: 'dothat', key1: 'dothis' })
+    public actionNew(msg: any, done: any) {
+    }
 }

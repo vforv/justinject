@@ -1,15 +1,15 @@
 import 'reflect-metadata';
-import { IType, MockingType, Mock } from './Model';
+import { IType, MockingType, IMock } from './Model';
 
-export interface IContainer<T> {
+export interface IContainer {
     set(target: IType<any>, type?: string): any;
     clear(): void;
     resolve<T>(target: any): T;
-    mock(mocks: MockingType): void
+    mock(mocks: MockingType): void;
 }
 
 /*eslint new-parens: "error"*/
-export const Container: IContainer<any> = new class {
+export const Container: IContainer = new class {
     private service: Map<any, any> = new Map<any, IType<any>>();
     private serviceType: Map<any, any> = new Map<any, IType<any>>();
     private mocks: Map<any, any> = new Map<any, IType<any>>();
@@ -62,6 +62,31 @@ export const Container: IContainer<any> = new class {
     }
 
     /**
+     * Mock or replace service
+     *
+     * @param mocks all mocking services
+     */
+    public mock(mocks: MockingType) {
+        this.hasMocks = true;
+
+        mocks.map((target: IMock) => {
+            /* istanbul ignore next */
+            const serviceToMockType: string = (target.type) ? target.type : 'default';
+
+            if (target.mockWith.name.slice(-4) !== 'Mock') {
+                throw new Error('Class name must end with "Mock"');
+            }
+
+            if (!target.override) {
+                if (!(target.mockWith.prototype instanceof target.service)) {
+                    throw new Error('"Mock" class must extends main instance, or set override tag to be true');
+                }
+            }
+            this.setMocks(target.mockWith, serviceToMockType);
+        });
+    }
+
+    /**
      * This will reslove service, if service is sinleton
      * we need just to return instance
      *
@@ -71,7 +96,7 @@ export const Container: IContainer<any> = new class {
     private resolveByserviceType<T>(target: IType<T>, injections: any): T {
         switch (this.serviceType.get(target.name)) {
             case 'singleton': {
-                this.service.get('FirstSinletonServiceMock')
+                this.service.get('FirstSinletonServiceMock');
                 if (this.service.get(target.name) === null) {
                     // resolve each mocked service here
                     const inj = new target(...injections);
@@ -92,32 +117,6 @@ export const Container: IContainer<any> = new class {
     }
 
     /**
-     * Mock or replace service
-     *
-     * @param mocks all mocking services
-     */
-    public mock(mocks: MockingType) {
-        this.hasMocks = true;
-
-        mocks.map((target: Mock) => {
-            /* istanbul ignore next */
-            const serviceToMockType: string = (target.type) ? target.type : 'default';
-
-            if (target.mockWith.name.slice(-4) !== 'Mock') {
-                throw new Error('Class name must end with "Mock"');
-            }
-
-            if (!target.override) {
-                if (!(target.mockWith.prototype instanceof target.service)) {
-                    throw new Error('"Mock" class must extends main instance, or set override tag to be true');
-                }
-            }
-            
-            this.setMocks(target.mockWith, serviceToMockType);
-        });
-    }
-
-    /**
      * Get mocking service
      *
      * @param target service which we want to mock
@@ -134,8 +133,6 @@ export const Container: IContainer<any> = new class {
     private isMockedClass(target: any) {
         return this.mocks.has(`${target.name}Mock`);
     }
-
-
 
     /**
      * This will add mocking services to service property
@@ -164,14 +161,14 @@ export const Container: IContainer<any> = new class {
     /**
      * If service is Singleton then set it to null
      * So we can resove it again
-     * 
+     *
      */
     private setPreviousSingletonToNull() {
         this.service.forEach((service) => {
             if (service && service.constructor && this.serviceType.get(service.constructor.name) === 'singleton') {
                 this.service.set(service.constructor.name, null);
             }
-        })
+        });
     }
 
     /**

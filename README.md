@@ -87,3 +87,32 @@ const second = Container.resolve<SecondService>(SecondService);
 console.log(second.method());
 // retruns date mocked
 ```
+
+# HemeraJs Support
+
+Hemera is node microservices framework. You can find more details here:
+https://github.com/hemerajs/hemera
+
+Justinject has support for hemera actions. You can declare new action like this:
+
+```
+@Service()
+export class ActionService {
+    constructor(public hemera: HemeraService, public validate: ValidateService) { }
+
+    @Action({
+        topic: 'new.topic',
+        cmd: 'gogo'
+    }, { additionalPattern: 'dothat', newAdditionalPattern: 'dothis' })
+    public action(msg: any, done: any) {
+        console.log('Action message', msg.data);
+        done(null, 'Hemera action called!');
+    }
+}
+```
+
+ActionService must have 2 properties hemera and validate.
+
+HemeraService must have instance getter which returns Hemera instance.
+
+ValidateService must have schema getter which returns validation.

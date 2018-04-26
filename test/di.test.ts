@@ -1,12 +1,11 @@
 import 'mocha';
 
 import { Container } from '../src/Container';
-import { ForthService, FirstService, FirstSinletonService } from './services';
-import { FirstServiceMock, FirstSinletonServiceMockWrong, Wrong } from './mocks';
+import { ForthService, FirstService, FirstSinletonService, HemeraService, ValidateService } from './services';
+import { FirstServiceMock, FirstSinletonServiceMockWrong, Wrong, HemeraServiceMock, ForthServiceMock } from './mocks';
 import * as replace from './mocks/replace';
 import * as chai from 'chai';
-import { FirstSinletonServiceMock, WrongTypeService, wrongService } from './mocks/index';
-
+import { FirstSinletonServiceMock, WrongTypeService, wrongService, ValidateServiceMock } from './mocks/index';
 const expect = chai.expect;
 // const assert = chai.assert;
 let forth: any;
@@ -56,7 +55,7 @@ describe('Test DI for typescript', () => {
         ])
         forth = Container.resolve<ForthService>(ForthService);
         first = Container.resolve<FirstService>(FirstService);
-        
+
         expect(forth.fromForthService()).to.be.equals('Method from first service replaced');
         expect(first.rnd).to.not.exist
 
@@ -108,7 +107,7 @@ describe('Test DI for typescript', () => {
                 type: 'singleton'
             }
         ])).throws('"Mock" class must extends main instance, or set override tag to be true');
-        
+
         done();
     })
 
@@ -116,7 +115,7 @@ describe('Test DI for typescript', () => {
         Container.clear();
 
         expect(() => Container.set(WrongTypeService, 'somethingwrong')).throws(`Please check WrongTypeService service. Service type somethingwrong doesn't exists`);
-        
+
         done();
     })
 
@@ -124,7 +123,7 @@ describe('Test DI for typescript', () => {
         Container.clear();
 
         expect(() => Container.set(wrongService, undefined)).throws(`Service wrongService should start with capital first letter`);
-        
+
         done();
     })
 
@@ -132,8 +131,76 @@ describe('Test DI for typescript', () => {
         Container.clear();
 
         expect(() => Container.set(Wrong, undefined)).throws(`Service Wrong should end with Service key word`);
-        
+
         done();
     })
 
+    it('Action test for Hemera', (done) => {
+        forth = Container.resolve<ForthService>(ForthService);
+        const result: any = forth.action();
+        expect(result).to.be.equal(`Action {"topic":"test.topic","cmd":"go"} added succesfly`)
+        done();
+    })
+
+    it('Action with params test for Hemera', (done) => {
+        forth = Container.resolve<ForthService>(ForthService);
+        const result: any = forth.actionNew();
+        expect(result).to.be.equal(`Action {"topic":"new.topic","cmd":"gogo","key":"dothat","key1":"dothis"} added succesfly`)
+        done();
+    })
+
+    it('Action test for Hemera, hemera instance method doesnt exists', (done) => {
+        Container.mock([
+            {
+                service: HemeraService,
+                mockWith: HemeraServiceMock,
+                type: 'default',
+                override: true
+            }
+        ]);
+
+        forth = Container.resolve<ForthService>(ForthService);
+        const error = `Action service hemera property.
+HemeraService must have instance getter which returns Hemera instance.
+                `;
+        expect(() => forth.actionNew()).throws(error)
+        done();
+    })
+
+    it('Action test for Hemera, hemera property doesnt exists', (done) => {
+        Container.mock([
+            {
+                service: ForthService,
+                mockWith: ForthServiceMock,
+                type: 'default',
+                override: true
+            }
+        ]);
+
+        forth = Container.resolve<ForthService>(ForthService);
+        const error = `Action service hemera property.
+HemeraService must have instance getter which returns Hemera instance.
+                `;
+        expect(() => forth.actionNew()).throws(error)
+        done();
+    })
+
+    it('Action test for Hemera, hemera validate method doesnt exists', (done) => {
+        Container.clear();
+        Container.mock([
+            {
+                service: ValidateService,
+                mockWith: ValidateServiceMock,
+                type: 'default',
+                override: true
+            }
+        ]);
+
+        forth = Container.resolve<ForthService>(ForthService);
+        const error = `Action service must validate property.
+ValidateService must have schema method which returns validation.
+                `;
+        expect(() => forth.actionNew()).throws(error)
+        done();
+    })
 })
