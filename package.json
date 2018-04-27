@@ -23,7 +23,8 @@
     ],
     "reporter": [
       "html",
-      "text"
+      "text",
+      "coveralls"
     ],
     "all": true
   },
@@ -59,6 +60,7 @@
     "uuid": "^3.2.1"
   },
   "devDependencies": {
-    "@types/reflect-metadata": "^0.1.0"
+    "@types/reflect-metadata": "^0.1.0",
+    "coveralls": "^3.0.0"
   }
 }
