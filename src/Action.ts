@@ -11,23 +11,23 @@ export const Action = (pattern: IAction, additionalPattern?: { [key: string]: st
             const thisClass: any = this;
 
             if (!thisClass.hemera) {
-                throw new Error('Action service must have hemera property. \
-                HemeraService must have instance getter which returns Hemera instance.');
+                throw new Error('Action service must have hemera property.\
+ HemeraService must have instance getter which returns Hemera instance.');
             }
 
             if (!thisClass.hemera.instance) {
-                throw new Error('Action service must have hemera property. \
-                HemeraService must have instance getter which returns Hemera instance.');
+                throw new Error('Action service must have hemera property.\
+ HemeraService must have instance getter which returns Hemera instance.');
             }
 
             if (!thisClass.validator) {
-                throw new Error('Action service must have validator property. \
-                ValidateService must have schema method which returns validation.');
+                throw new Error('Action service must have validator property.\
+ ValidateService must have schema method which returns validation.');
             }
 
             if (!thisClass.validator.schema) {
-                throw new Error('Action service must have validator property. \
-                ValidateService must have schema method which returns validation.');
+                throw new Error('Action service must have validator property.\
+ ValidateService must have schema method which returns validation.');
             }
 
             const hemera: any = thisClass.hemera.instance;
