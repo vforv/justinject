@@ -1,11 +1,11 @@
 import 'mocha';
 
 import { Container } from '../src/Container';
-import { ForthService, FirstService, FirstSinletonService, HemeraService, ValidateService } from './services';
-import { FirstServiceMock, FirstSinletonServiceMockWrong, Wrong, HemeraServiceMock, ForthServiceMock } from './mocks';
+import { ForthService, FirstService, FirstSinletonService } from './services';
+import { FirstServiceMock, FirstSinletonServiceMockWrong, Wrong} from './mocks';
 import * as replace from './mocks/replace';
 import * as chai from 'chai';
-import { FirstSinletonServiceMock, WrongTypeService, wrongService, ValidateServiceMock } from './mocks/index';
+import { FirstSinletonServiceMock, WrongTypeService, wrongService } from './mocks/index';
 const expect = chai.expect;
 // const assert = chai.assert;
 let forth: any;
@@ -146,61 +146,6 @@ describe('Test DI for typescript', () => {
         forth = Container.resolve<ForthService>(ForthService);
         const result: any = forth.actionNew();
         expect(result).to.be.equal(`Action {"topic":"new.topic","cmd":"gogo","key":"dothat","key1":"dothis"} added succesfly`)
-        done();
-    })
-
-    it('Action test for Hemera, hemera instance method doesnt exists', (done) => {
-        Container.mock([
-            {
-                service: HemeraService,
-                mockWith: HemeraServiceMock,
-                type: 'default',
-                override: true
-            }
-        ]);
-
-        forth = Container.resolve<ForthService>(ForthService);
-        const error = `Action service must have hemera property.
-HemeraService must have instance getter which returns Hemera instance.
-                `;
-        expect(() => forth.actionNew()).throws(error)
-        done();
-    })
-
-    it('Action test for Hemera, hemera property doesnt exists', (done) => {
-        Container.mock([
-            {
-                service: ForthService,
-                mockWith: ForthServiceMock,
-                type: 'default',
-                override: true
-            }
-        ]);
-
-        forth = Container.resolve<ForthService>(ForthService);
-        const error = `Action service must have hemera property.
-HemeraService must have instance getter which returns Hemera instance.
-                `;
-        expect(() => forth.actionNew()).throws(error)
-        done();
-    })
-
-    it('Action test for Hemera, hemera validate method doesnt exists', (done) => {
-        Container.clear();
-        Container.mock([
-            {
-                service: ValidateService,
-                mockWith: ValidateServiceMock,
-                type: 'default',
-                override: true
-            }
-        ]);
-
-        forth = Container.resolve<ForthService>(ForthService);
-        const error = `Action service must have validator property.
-ValidateService must have schema method which returns validation.
-                `;
-        expect(() => forth.actionNew()).throws(error)
         done();
     })
 })

@@ -66,7 +66,7 @@ export const Container: IContainer = new class {
      *
      * @param mocks all mocking services
      */
-    public mock(mocks: MockingType) {
+    public mock(mocks: MockingType): void {
         this.hasMocks = true;
 
         mocks.map((target: IMock) => {

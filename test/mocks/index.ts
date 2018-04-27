@@ -1,4 +1,4 @@
-import { FirstService, HemeraService, ValidateService } from "../services";
+import { FirstService, HemeraService, ValidateService, FirstSinletonService, ThirdService } from "../services";
 import { Action } from '../../src/Action';
 
 export class FirstServiceMock extends FirstService {
@@ -48,7 +48,7 @@ export class ValidateServiceMock {
 
 
 export class ForthServiceMock {
-    constructor(public hemeraWrong: HemeraService, public validator: ValidateService) { }
+    constructor(public third: ThirdService, public fromSingleton: FirstSinletonService, public first: FirstService, public hemeraWrong: HemeraService, public validator: ValidateService) { }
 
     @Action({
         topic: 'test.topic',

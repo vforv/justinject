@@ -39,7 +39,7 @@ class SecondService {
 }
 
 @Service()
-class ThirdService {
+export class ThirdService {
     constructor(public second: SecondService, public firstSingl: FirstSinletonService) { }
 
     public fromThirdService() {
@@ -98,7 +98,7 @@ export class ForthService {
         topic: 'test.topic',
         cmd: 'go'
     })
-    public action(msg: any, done: any) {
+    public action(msg?: any, done?: any) {
         console.log(msg)
         console.log(done)
         console.log(this.third.fromThirdService())
@@ -108,7 +108,7 @@ export class ForthService {
         topic: 'new.topic',
         cmd: 'gogo'
     }, { key: 'dothat', key1: 'dothis' })
-    public actionNew(msg: any, done: any) {
+    public actionNew(msg?: any, done?: any) {
         console.log(msg)
         console.log(done)
         console.log(this.third.fromThirdService())

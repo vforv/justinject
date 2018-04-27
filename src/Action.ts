@@ -6,23 +6,24 @@ export interface IAction {
 export const Action = (pattern: IAction, additionalPattern?: { [key: string]: string }) => {
     return (target: any, key: PropertyKey, descriptor: TypedPropertyDescriptor<any>) => {
         const orginalMethod = descriptor.value;
-        descriptor.value = function(...args: any[]) {
+        descriptor.value = function (...args: any[]) {
+
             const thisClass: any = this;
 
-            if (!thisClass.hemera || !thisClass.hemera.instance) {
-                const error = `Action service must have hemera property.
-HemeraService must have instance getter which returns Hemera instance.
-                `;
-                console.log('\x1b[31m', error);
-                throw new Error(error);
+            if (!thisClass.hemera) {
+                throw new Error('Action service must have hemera property. HemeraService must have instance getter which returns Hemera instance.');
+            }
+            
+            if (!thisClass.hemera.instance) {
+                throw new Error('Action service must have hemera property. HemeraService must have instance getter which returns Hemera instance.');
             }
 
-            if (!thisClass.validator || !thisClass.validator.schema) {
-                const error = `Action service must have validator property.
-ValidateService must have schema method which returns validation.
-                `;
-                console.log('\x1b[31m', error);
-                throw new Error(error);
+            if (!thisClass.validator) {
+                throw new Error('Action service must have validator property. ValidateService must have schema method which returns validation.');
+            }
+
+            if (!thisClass.validator.schema) {
+                throw new Error('Action service must have validator property. ValidateService must have schema method which returns validation.');
             }
 
             const hemera: any = thisClass.hemera.instance;

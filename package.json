@@ -18,7 +18,8 @@
       "test",
       "example",
       "src/Model.ts",
-      "dist"
+      "dist",
+      "src/index.ts"
     ],
     "reporter": [
       "html",
@@ -30,7 +31,7 @@
     "build": "tsc --traceResolution",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "dev": "nodemon",
-    "test": "nyc --check-coverage --lines 100 --functions 100 --branches 100 --statements 100 mocha -r ts-node/register test/**/*.test.ts",
+    "test": "nyc --check-coverage --lines 95 --functions 100 --branches 100 --statements 95 mocha -r ts-node/register test/**/*.test.ts",
     "ts-node": "npm run lint && ts-node ./example"
   },
   "author": "Vladimir Djukic <www.vladimirdjukic.com>",
