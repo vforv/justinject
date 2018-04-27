@@ -111,7 +111,7 @@ export class ActionService {
 }
 ```
 
-ActionService must have 2 properties hemera and validate.
+ActionService must have 2 properties hemera and validator.
 
 HemeraService must have instance getter which returns Hemera instance.
 

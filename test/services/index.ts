@@ -76,7 +76,7 @@ export class ValidateService {
 
 @Service()
 export class ForthService {
-    constructor(public third: ThirdService, public fromSingleton: FirstSinletonService, public first: FirstService, public hemera: HemeraService, public validate: ValidateService) { }
+    constructor(public third: ThirdService, public fromSingleton: FirstSinletonService, public first: FirstService, public hemera: HemeraService, public validator: ValidateService) { }
 
     public fromForthService() {
         return this.third.fromThirdService();

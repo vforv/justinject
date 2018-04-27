@@ -10,15 +10,15 @@ export const Action = (pattern: IAction, additionalPattern?: { [key: string]: st
             const thisClass: any = this;
 
             if (!thisClass.hemera || !thisClass.hemera.instance) {
-                const error = `Action service hemera property.
+                const error = `Action service must have hemera property.
 HemeraService must have instance getter which returns Hemera instance.
                 `;
                 console.log('\x1b[31m', error);
                 throw new Error(error);
             }
 
-            if (!thisClass.validate || !thisClass.validate.schema) {
-                const error = `Action service must validate property.
+            if (!thisClass.validator || !thisClass.validator.schema) {
+                const error = `Action service must have validator property.
 ValidateService must have schema method which returns validation.
                 `;
                 console.log('\x1b[31m', error);
@@ -29,7 +29,7 @@ ValidateService must have schema method which returns validation.
 
             let patternWithValidation: any = {
                 ...pattern,
-                data: thisClass.validate.schema,
+                data: thisClass.validator.schema,
             };
 
             if (additionalPattern) {

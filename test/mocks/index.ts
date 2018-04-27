@@ -48,7 +48,7 @@ export class ValidateServiceMock {
 
 
 export class ForthServiceMock {
-    constructor(public hemeraWrong: HemeraService, public validate: ValidateService) { }
+    constructor(public hemeraWrong: HemeraService, public validator: ValidateService) { }
 
     @Action({
         topic: 'test.topic',

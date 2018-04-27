@@ -160,7 +160,7 @@ describe('Test DI for typescript', () => {
         ]);
 
         forth = Container.resolve<ForthService>(ForthService);
-        const error = `Action service hemera property.
+        const error = `Action service must have hemera property.
 HemeraService must have instance getter which returns Hemera instance.
                 `;
         expect(() => forth.actionNew()).throws(error)
@@ -178,7 +178,7 @@ HemeraService must have instance getter which returns Hemera instance.
         ]);
 
         forth = Container.resolve<ForthService>(ForthService);
-        const error = `Action service hemera property.
+        const error = `Action service must have hemera property.
 HemeraService must have instance getter which returns Hemera instance.
                 `;
         expect(() => forth.actionNew()).throws(error)
@@ -197,7 +197,7 @@ HemeraService must have instance getter which returns Hemera instance.
         ]);
 
         forth = Container.resolve<ForthService>(ForthService);
-        const error = `Action service must validate property.
+        const error = `Action service must have validator property.
 ValidateService must have schema method which returns validation.
                 `;
         expect(() => forth.actionNew()).throws(error)
