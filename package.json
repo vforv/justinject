@@ -23,8 +23,7 @@
     ],
     "reporter": [
       "html",
-      "text",
-      "coveralls"
+      "text"
     ],
     "all": true
   },
@@ -33,6 +32,7 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "dev": "nodemon",
     "test": "nyc --check-coverage --lines 95 --functions 100 --branches 100 --statements 95 mocha -r ts-node/register test/**/*.test.ts",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
     "ts-node": "npm run lint && ts-node ./example"
   },
   "author": "Vladimir Djukic <www.vladimirdjukic.com>",

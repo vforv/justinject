@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/vforv/justinject.svg?branch=master)](https://travis-ci.org/vforv/justinject)
+[![Coverage Status](https://coveralls.io/repos/github/vforv/justinject/badge.svg?branch=master)](https://coveralls.io/github/vforv/justinject?branch=master)
 
 # Dependency injection for Typescript
 
